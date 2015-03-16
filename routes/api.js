@@ -6,6 +6,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Page= require('../models/page.js');
 var adminUser= require('../models/admin-users.js');
+var bcrypt = require('bcrypt-nodejs');
 
 /* User Routes. */
 
@@ -91,5 +92,60 @@ router.get('/pages/details/:url', function(request, response) {
         return response.send(page);
     });
 });
+
+
+router.post('/add-user', function(request, response) {
+    var salt, hash, password;
+    password = request.body.password;
+    salt = bcrypt.genSaltSync(10);
+    hash = bcrypt.hashSync(password, salt);
+
+    var AdminUser = new adminUser({
+        username: request.body.username,
+        password: hash
+    });
+    AdminUser.save(function(err) {
+        if (!err) {
+            return response.send('Admin User successfully created');
+
+        } else {
+            return response.send(err);
+        }
+    });
+});
+
+router.post('/login', function(request, response) {
+    var username = request.body.username;
+    var password = request.body.password;
+
+    adminUser.findOne({
+        username: username
+    }, function(err, data) {
+        if (err | data === null) {
+            return response.send(401, "User Doesn't exist");
+        } else {
+            var usr = data;
+
+            if (username == usr.username && bcrypt.compareSync(password, usr.password)) {
+
+                request.session.regenerate(function() {
+                    request.session.user = username;
+                    return response.send(username);
+
+                });
+            } else {
+                return response.send(401, "Bad Username or Password");
+            }
+        }
+    });
+});
+
+router.get('/logout', function(request, response) {
+    request.session.destroy(function() {
+        return response.send(401, 'User logged out');
+
+    });
+});
+
 
 module.exports = router;
