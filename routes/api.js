@@ -25,7 +25,7 @@ router.get('/pages', function(request, response) {
     });
 });
 
-router.post('/pages/add', function(request, response) {
+router.post('/pages/add', sessionCheck, function(request, response) {
     var page = new Page({
         title: request.body.title,
         url: request.body.url,
@@ -44,7 +44,7 @@ router.post('/pages/add', function(request, response) {
     });
 });
 
-router.post('/pages/update', function(request, response) {
+router.post('/pages/update', sessionCheck, function(request, response) {
     var id = request.body._id;
 
     Page.update({
@@ -61,7 +61,7 @@ router.post('/pages/update', function(request, response) {
     response.send("Page updated");
 });
 
-router.get('/pages/delete/:id', function(request, response) {
+router.get('/pages/delete/:id', sessionCheck, function(request, response) {
     var id = request.params.id;
     Page.remove({
         _id: id
@@ -71,7 +71,7 @@ router.get('/pages/delete/:id', function(request, response) {
     return response.send('Page id- ' + id + ' has been deleted');
 });
 
-router.get('/pages/admin-details/:id', function(request, response) {
+router.get('/pages/admin-details/:id', sessionCheck, function(request, response) {
     var id = request.params.id;
     Page.findOne({
         _id: id
@@ -146,6 +146,12 @@ router.get('/logout', function(request, response) {
 
     });
 });
+
+function sessionCheck(request,response,next){
+
+    if(request.session.user) next();
+    else response.send(401,'authorization failed');
+}
 
 
 module.exports = router;
