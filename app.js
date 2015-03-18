@@ -18,6 +18,8 @@ var mongoose = require('mongoose');
 mongoose.connect(require('./config/connection').mongoConnection);
 var db = mongoose.connecetion;
 
+console.log(db);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
