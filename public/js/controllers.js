@@ -1,8 +1,6 @@
 'use strict';
-
-'use strict';
-angular.module('myApp.controllers', []).
-    controller('AdminPagesCtrl', ['$scope', '$log', 'pagesFactory',
+angular.module('myApp.controllers', ['myApp.services'])
+    .controller('AdminPagesCtrl', ['$scope', '$log', 'pagesFactory',
       function($scope, $log, pagesFactory) {
         pagesFactory.getPages().then(
             function(response) {
@@ -17,7 +15,30 @@ angular.module('myApp.controllers', []).
         };
 
       }
-    ]);
+    ])
+    .controller('AdminLoginCtrl', ['$scope', '$location', '$cookies', '$log', 'AuthService',
+        function($scope, $location, $cookies, $log, AuthService) {
+            $scope.credentials = {
+                username: '',
+                password: ''
+            };
+            //var AuthService = {};
+            $scope.login = function(credentials) {
+                AuthService.login(credentials).then(
+                    function(res, err) {
+                        $cookies.loggedInUser = res.data;
+                        $location.path('/admin/pages');
+                    },
+                    function(err) {
+                        $log.log(err);
+                    });
+            };
+        }
+    ])
+
+
+
+;
 
 /* Controllers
 
