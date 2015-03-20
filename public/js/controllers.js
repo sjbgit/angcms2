@@ -16,12 +16,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 
       }
     ])
-    .controller('AdminLoginCtrl', ['$scope', '$location', '$cookies', '$log', 'AuthService',
-        function($scope, $location, $cookies, $log, AuthService) {
+    .controller('AdminLoginCtrl', ['$scope', '$location', '$cookies', '$log', 'AuthService', 'flashMessageService',
+        function($scope, $location, $cookies, $log, AuthService, flashMessageService) {
             $scope.credentials = {
                 username: '',
                 password: ''
             };
+
+            //flashMessageService.setMessage('test message');
+
             //var AuthService = {};
             $scope.login = function(credentials) {
                 AuthService.login(credentials).then(
@@ -31,6 +34,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                     },
                     function(err) {
                         $log.log(err);
+                        flashMessageService.setMessage(err.data);
                     });
             };
         }
