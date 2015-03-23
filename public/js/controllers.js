@@ -40,6 +40,36 @@ angular.module('myApp.controllers', ['myApp.services'])
         }
     ])
 
+    .controller('AddEditPageCtrl', ['$scope', '$log', 'pagesFactory', '$routeParams', '$location', 'flashMessageService', function($scope, $log, pagesFactory, $routeParams, $location, flashMessageService) {
+        $scope.pageContent = {};
+        $scope.pageContent._id = $routeParams.id;
+        $scope.heading = "Add a New Page";
+
+        if ($scope.pageContent._id !== 0) {
+            $scope.heading = "Update Page";
+            pagesFactory.getAdminPageContent($scope.pageContent._id).then(
+                function(response) {
+                    $scope.pageContent = response.data;
+                    $log.info($scope.pageContent);
+                },
+                function(err) {
+                    $log.error(err);
+                });
+        }
+
+        $scope.savePage = function() {
+            pagesFactory.savePage($scope.pageContent).then(
+                function() {
+                    flashMessageService.setMessage("Page Saved Successfully");
+                    $location.path('/admin/pages');
+                },
+                function() {
+                    $log.error('error saving data');
+                }
+            );
+        };
+    }
+    ])
 
 
 ;
