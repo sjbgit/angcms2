@@ -35,4 +35,8 @@ angular.module('myApp', [
         //$routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
         //$routeProvider.otherwise({redirectTo: '/view1'});
         $locationProvider.html5Mode(true);
-    }]);
+    }])
+
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push('myHttpInterceptor');
+    });
