@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label>Page URL Alias</label>
-        <input class="form-control" type="text" ng-model="pageContent.url"/>
+        <input class="form-control" type="text" readonly ng-model="pageContent.url"/>
     </div>
 
     <div class="form-group">
@@ -23,7 +23,7 @@
 
     <div class="form-group">
         <label>Page Content</label>
-        <textarea rows="15" class="form-control" type="text" ng-model="pageContent.content"></textarea>
+        <textarea rows="15" ui-tinymce class="form-control" type="text" ng-model="pageContent.content"></textarea>
     </div>
     <input type="submit" class="btn btn-success" value="Save">
     </div>
