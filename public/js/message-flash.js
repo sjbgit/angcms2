@@ -4,7 +4,7 @@
 'use strict'
 angular.module('message.flash', [])
     .factory('flashMessageService', ['$rootScope', function ($rootScope) {
-        var message = '';
+        var message = '', callback = {};
         return {
             getMessage: function() {
                 return message;
@@ -13,5 +13,10 @@ angular.module('message.flash', [])
                 message = newMessage;
                 $rootScope.$broadcast('NEW_MESSAGE');
             }
+            /*
+            setCallback: function(cb) {
+                callback = cb;
+            }
+            */
         };
     }]);

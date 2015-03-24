@@ -31,6 +31,7 @@ angular.module('myApp.services', [])
         function($http) {
             return {
                 login: function(credentials) {
+                    console.log('auth services', JSON.stringify(credentials));
                     return $http.post('/api/login', credentials);
                 },
                 logout: function() {

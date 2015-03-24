@@ -100,6 +100,8 @@ router.post('/add-user', function(request, response) {
     salt = bcrypt.genSaltSync(10);
     hash = bcrypt.hashSync(password, salt);
 
+    console.log('pass:' + password + 'username: ' + request.body.username);
+
     var AdminUser = new adminUser({
         username: request.body.username,
         password: hash
