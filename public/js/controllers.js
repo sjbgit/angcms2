@@ -76,6 +76,27 @@ angular.module('myApp.controllers', ['myApp.services'])
         }
     ])
 
+    .controller('AppCtrl', ['$scope', 'AuthService', 'flashMessageService', '$location', function ($scope, AuthService, flashMessageService, $location) {
+        $scope.site = {
+            logo: "img/angcms-logo.png",
+            footer: "Copyright 2014 Angular CMS"
+        };
+
+        $scope.logout = function () {
+            AuthService.logout().then(
+                function () {
+
+                    $location.path('/admin/login');
+                    flashMessageService.setMessage("Successfully logged out");
+
+                }, function (err) {
+                    console.log('there was an error tying to logout');
+                });
+        };
+
+    }
+    ])
+
 
 ;
 
